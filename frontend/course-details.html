@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details | LearnHub - Learn Skills. Build Your Future.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">L</span>
+      Learn<span>Hub</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="login.html" class="login-btn">Login</a>
+      <a href="register.html" class="signup-btn">Get Started ↗</a>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div style="margin-bottom: 25px;">
+      <a class="back-link" href="courses.html" style="color: #9baaa4; text-decoration: none; font-size: 13.5px; display: inline-flex; align-items: center; gap: 6px;">
+        ← Back to All Courses
+      </a>
+    </div>
+
+    <section id="courseDetails" class="detail-card" style="background: #111c19; border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 36px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <span class="section-tag">COURSE SYLLABUS & OVERVIEW</span>
+      </div>
+
+      <h1 id="detailTitle" style="font-size: clamp(28px, 4vw, 38px); margin: 12px 0 16px; color: #f3f7f5;">Loading Course...</h1>
+      <p id="detailDescription" class="muted" style="font-size: 16px; line-height: 1.6; max-width: 850px; margin-bottom: 24px;"></p>
+
+      <div class="detail-meta" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px;">
+        <span id="detailCategory" style="background: rgba(16,185,129,0.12); color: #34d399; font-weight: 600; padding: 6px 14px; border-radius: 8px;"></span>
+        <span id="detailLevel" style="background: rgba(255,255,255,0.06); color: #f3f7f5; padding: 6px 14px; border-radius: 8px;"></span>
+        <span id="detailDuration" style="background: rgba(255,255,255,0.06); color: #f3f7f5; padding: 6px 14px; border-radius: 8px;"></span>
+        <span id="detailLessonsCount" style="background: rgba(255,255,255,0.06); color: #f3f7f5; padding: 6px 14px; border-radius: 8px;"></span>
+        <span id="detailInstructor" style="background: rgba(255,255,255,0.06); color: #9baaa4; padding: 6px 14px; border-radius: 8px;"></span>
+      </div>
+
+      <!-- Action Card -->
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 24px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px;">
+        <div>
+          <h3 style="color: #f3f7f5; font-size: 18px; margin-bottom: 4px;">Ready to start learning?</h3>
+          <p style="color: #9baaa4; font-size: 14px;">Enroll to access all video lectures, course materials, and progress tracking.</p>
+        </div>
+        <div>
+          <button id="enrollButton" class="primary-button" type="button" style="padding: 13px 30px; font-size: 15px; font-weight: 700;">Enroll Now (Free) →</button>
+        </div>
+      </div>
+      <p id="enrollMessage" class="message" style="margin-top: -20px; margin-bottom: 25px; font-weight: 600;" aria-live="polite"></p>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 32px;">
+        <h2 style="font-size: 22px; color: #f3f7f5; margin-bottom: 18px;">Course Curriculum & Lessons</h2>
+        <ul id="detailLessons" class="lesson-list" style="list-style: none; padding: 0;">
+          <li style="color: #9baaa4;">Loading syllabus...</li>
+        </ul>
+      </div>
+
+      <!-- Related Courses Section -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 36px; margin-top: 40px;">
+        <h3 style="font-size: 20px; color: #f3f7f5; margin-bottom: 16px;">Related Courses in this Category</h3>
+        <div id="relatedCoursesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px;">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" style="margin-top: 80px;">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">L</span>
+      Learn<span>Hub</span>
+    </a>
+    <p>Learn Skills. Build Your Future.</p>
+    <span>© 2026 LearnHub. All rights reserved.</span>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/courses.js"></script>
+</body>
+</html>

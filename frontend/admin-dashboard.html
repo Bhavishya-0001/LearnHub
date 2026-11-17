@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | LearnHub Management Center</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .tab-btn {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      color: #9baaa4;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: #34d399;
+      border-bottom-color: #10b981;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13.5px;
+    }
+    .data-table th {
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.02);
+      color: #9baaa4;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-weight: 600;
+    }
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #f3f7f5;
+    }
+    .data-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      place-items: center;
+      padding: 20px;
+    }
+    .modal.open {
+      display: grid;
+    }
+    .modal-box {
+      width: min(100%, 550px);
+      background: #111c19;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">L</span>
+      Learn<span>Hub</span>
+    </a>
+    <nav class="nav-links">
+      <a href="dashboard.html">Student Space</a>
+      <a href="admin-dashboard.html" style="color: #34d399; font-weight: 700;">Admin Center</a>
+      <a href="http://127.0.0.1:8000/admin/" target="_blank" style="color: #9baaa4;">Django Admin ↗</a>
+    </nav>
+    <div class="nav-actions">
+      <!-- Injected via api.js -->
+    </div>
+  </header>
+
+  <main class="page-container" style="max-width: 1300px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; margin-bottom: 30px;">
+      <div>
+        <p class="section-tag">ADMINISTRATION & PLATFORM CONTROL</p>
+        <h1>Admin <span class="green-text">Dashboard</span></h1>
+        <p class="muted">Manage courses, lessons, students, and platform metrics.</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button id="openCreateCourseModal" class="primary-btn" style="padding: 10px 20px; font-size: 13.5px;">+ Create New Course</button>
+      </div>
+    </div>
+
+    <!-- Platform Stats Cards -->
+    <section class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 35px;">
+      <article class="stat-card">
+        <span style="font-size: 11.5px; color: #9baaa4; font-weight: 700; text-transform: uppercase;">Total Students</span>
+        <h2 id="statStudents" style="font-size: 34px; margin-top: 6px;">0</h2>
+      </article>
+
+      <article class="stat-card">
+        <span style="font-size: 11.5px; color: #9baaa4; font-weight: 700; text-transform: uppercase;">Total Courses</span>
+        <h2 id="statCourses" style="font-size: 34px; margin-top: 6px;">0</h2>
+      </article>
+
+      <article class="stat-card">
+        <span style="font-size: 11.5px; color: #9baaa4; font-weight: 700; text-transform: uppercase;">Published</span>
+        <h2 id="statPublished" style="font-size: 34px; color: #10b981; margin-top: 6px;">0</h2>
+      </article>
+
+      <article class="stat-card">
+        <span style="font-size: 11.5px; color: #9baaa4; font-weight: 700; text-transform: uppercase;">Total Enrollments</span>
+        <h2 id="statEnrollments" style="font-size: 34px; color: #34d399; margin-top: 6px;">0</h2>
+      </article>
+
+      <article class="stat-card">
+        <span style="font-size: 11.5px; color: #9baaa4; font-weight: 700; text-transform: uppercase;">Completed Enrollments</span>
+        <h2 id="statCompleted" style="font-size: 34px; color: #f3f7f5; margin-top: 6px;">0</h2>
+      </article>
+    </section>
+
+    <!-- Admin Tabs -->
+    <div style="display: flex; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+      <button class="tab-btn active" data-tab="tabCourses">Courses & Lessons</button>
+      <button class="tab-btn" data-tab="tabStudents">Registered Students</button>
+      <button class="tab-btn" data-tab="tabEnrollments">All Enrollments</button>
+    </div>
+
+    <!-- Tab 1: Courses Management -->
+    <div id="tabCourses" class="tab-content">
+      <div style="background: #111c19; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Course Title</th>
+              <th>Category</th>
+              <th>Level</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminCoursesTable">
+            <tr><td colspan="7" style="text-align: center; color: #9baaa4;">Loading courses...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Students Management -->
+    <div id="tabStudents" class="tab-content" style="display: none;">
+      <div style="background: #111c19; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student Name</th>
+              <th>Email Address</th>
+              <th>Enrolled Courses</th>
+              <th>Completed Courses</th>
+              <th>Date Joined</th>
+            </tr>
+          </thead>
+          <tbody id="adminStudentsTable">
+            <tr><td colspan="6" style="text-align: center; color: #9baaa4;">Loading students...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Enrollments Management -->
+    <div id="tabEnrollments" class="tab-content" style="display: none;">
+      <div style="background: #111c19; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student</th>
+              <th>Course</th>
+              <th>Progress</th>
+              <th>Enrolled Date</th>
+            </tr>
+          </thead>
+          <tbody id="adminEnrollmentsTable">
+            <tr><td colspan="5" style="text-align: center; color: #9baaa4;">Loading enrollments...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal: Create Course -->
+  <div id="createCourseModal" class="modal">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="color: #f3f7f5; font-size: 20px;">Create New Course</h3>
+        <button id="closeCreateCourseModal" style="background: transparent; border: none; color: #9baaa4; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <form id="createCourseForm">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Course Title</label>
+          <input id="newCourseTitle" type="text" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;" required>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Category</label>
+          <select id="newCourseCategory" style="width: 100%; padding: 10px 14px; background: #111c19; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;" required>
+            <!-- Injected via admin.js -->
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Level</label>
+            <select id="newCourseLevel" style="width: 100%; padding: 10px 14px; background: #111c19; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Duration</label>
+            <input id="newCourseDuration" type="text" value="8 Weeks" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;">
+          </div>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Instructor / Faculty Name</label>
+          <input id="newCourseInstructor" type="text" value="LearnHub Faculty" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;">
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Thumbnail Image URL</label>
+          <input id="newCourseThumb" type="url" placeholder="https://images.unsplash.com/..." style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;">
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Description</label>
+          <textarea id="newCourseDesc" rows="3" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;" required></textarea>
+        </div>
+        <button class="primary-button" type="submit" style="width: 100%; padding: 12px;">Create Course</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Lesson -->
+  <div id="addLessonModal" class="modal">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 id="addLessonModalTitle" style="color: #f3f7f5; font-size: 20px;">Add Lesson</h3>
+        <button id="closeAddLessonModal" style="background: transparent; border: none; color: #9baaa4; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <form id="addLessonForm">
+        <input id="lessonTargetCourseId" type="hidden">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Lesson Title</label>
+          <input id="newLessonTitle" type="text" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Order #</label>
+            <input id="newLessonOrder" type="number" value="1" min="1" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;" required>
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Duration</label>
+            <input id="newLessonDuration" type="text" value="20 mins" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;">
+          </div>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Video Embed URL</label>
+          <input id="newLessonVideoUrl" type="url" placeholder="https://www.youtube.com/embed/..." style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;">
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 12px; color: #9baaa4; margin-bottom: 4px;">Lesson Description / Material</label>
+          <textarea id="newLessonDesc" rows="3" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #f3f7f5;"></textarea>
+        </div>
+        <button class="primary-button" type="submit" style="width: 100%; padding: 12px;">Add Lesson</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

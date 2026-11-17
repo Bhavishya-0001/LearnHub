@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Lesson | LearnHub - Learn Skills. Build Your Future.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .classroom-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      margin-top: 25px;
+    }
+    @media (max-width: 960px) {
+      .classroom-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 24px;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .lesson-sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,0.02);
+      transition: all 0.2s;
+    }
+    .lesson-sidebar-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.08);
+    }
+    .lesson-sidebar-item.active {
+      background: rgba(16,185,129,0.12);
+      border-color: rgba(16,185,129,0.3);
+    }
+    .lesson-sidebar-item.completed .check-bubble {
+      background: #10b981;
+      color: #04130e;
+    }
+    .check-bubble {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: #9baaa4;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">L</span>
+      Learn<span>Hub</span>
+    </a>
+    <nav class="nav-links">
+      <a href="courses.html">Courses</a>
+      <a href="my-courses.html">My Courses</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <div class="nav-actions">
+      <!-- Injected via api.js -->
+    </div>
+  </header>
+
+  <main class="page-container" style="max-width: 1400px; padding: 35px 5%;">
+    <!-- Top Bar with Course Progress -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;">
+      <div>
+        <a id="backToCourse" href="my-courses.html" style="color: #9baaa4; font-size: 13px; text-decoration: none;">← Back to My Courses</a>
+        <h2 id="courseHeaderTitle" style="font-size: 22px; color: #f3f7f5; margin-top: 4px;">Loading Course...</h2>
+      </div>
+      <div style="min-width: 240px;">
+        <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 6px;">
+          <span style="color: #9baaa4;">Course Progress</span>
+          <strong id="progressBadge" style="color: #34d399;">0%</strong>
+        </div>
+        <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
+          <div id="progressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 999px; transition: width 0.3s ease;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Classroom Grid -->
+    <div class="classroom-layout">
+      <!-- Left: Lesson Video Player and Content -->
+      <section>
+        <div class="video-wrapper">
+          <iframe id="lessonVideo" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div style="background: #111c19; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 28px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 18px;">
+            <div>
+              <span id="lessonOrderBadge" class="section-tag">LESSON 1</span>
+              <h1 id="lessonTitle" style="font-size: 26px; color: #f3f7f5; margin: 6px 0;">Loading Lesson...</h1>
+              <span id="lessonDuration" style="color: #9baaa4; font-size: 13px;">Duration: 15 mins</span>
+            </div>
+            <div>
+              <button id="completeBtn" class="primary-button" type="button" style="padding: 10px 22px; font-size: 14px; font-weight: 700;">
+                ✓ Mark as Completed
+              </button>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px;">
+            <h3 style="color: #f3f7f5; font-size: 16px; margin-bottom: 8px;">Lesson Notes & Material</h3>
+            <p id="lessonDescription" style="color: #9baaa4; font-size: 14.5px; line-height: 1.7;"></p>
+          </div>
+
+          <!-- Prev / Next Controls -->
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 22px; margin-top: 25px;">
+            <button id="prevBtn" type="button" style="background: transparent; border: 1px solid rgba(255,255,255,0.12); color: #f3f7f5; padding: 9px 18px; border-radius: 8px; cursor: pointer;">
+              ← Previous Lesson
+            </button>
+            <button id="nextBtn" type="button" class="primary-button" style="padding: 9px 22px;">
+              Next Lesson →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Course Syllabus Sidebar -->
+      <aside style="background: #111c19; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 22px; height: fit-content;">
+        <h3 style="font-size: 17px; color: #f3f7f5; margin-bottom: 6px;">Course Lessons</h3>
+        <p id="lessonsCounter" style="color: #9baaa4; font-size: 12px; margin-bottom: 18px;">0 of 0 completed</p>
+
+        <div id="lessonsSidebarList">
+          <!-- Populated by lesson.js -->
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/lesson.js"></script>
+</body>
+</html>

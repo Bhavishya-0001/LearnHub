@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Courses | LearnHub - Learn Skills. Build Your Future.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">L</span>
+      Learn<span>Hub</span>
+    </a>
+    <nav class="nav-links">
+      <a href="courses.html">Explore Courses</a>
+      <a href="my-courses.html" style="color: #34d399; font-weight: 600;">My Courses</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+    <div class="nav-actions">
+      <!-- Injected via api.js -->
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; margin-bottom: 30px;">
+      <div>
+        <p class="section-tag">YOUR ENROLLED CURRICULUM</p>
+        <h1>My <span class="green-text">Enrolled Courses</span></h1>
+        <p class="muted">Access your lessons, track your progress, and continue studying.</p>
+      </div>
+      <div>
+        <a href="courses.html" class="primary-btn" style="padding: 10px 20px; font-size: 13.5px;">+ Enroll in More Courses</a>
+      </div>
+    </div>
+
+    <!-- My Courses Grid -->
+    <div id="myCoursesGrid" class="course-grid">
+      <!-- Loaded dynamically via dashboard.js -->
+    </div>
+    <p id="myCoursesMessage" class="muted" style="margin-top: 15px;"></p>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" style="margin-top: 80px;">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">L</span>
+      Learn<span>Hub</span>
+    </a>
+    <p>Learn Skills. Build Your Future.</p>
+    <span>© 2026 LearnHub. All rights reserved.</span>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

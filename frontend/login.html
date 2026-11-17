@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | LearnHub - Learn Skills. Build Your Future.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-card">
+      <a class="brand" href="index.html">
+        <span class="logo-icon" style="display:inline-grid; width:28px; height:28px; border-radius:8px; background:#10b981; color:#04130e; font-size:16px; place-items:center; margin-right:6px; vertical-align:middle;">L</span>
+        Learn<span>Hub</span>
+      </a>
+      <p class="eyebrow">WELCOME BACK</p>
+      <h1>Log in to your account</h1>
+      <p class="muted">Continue your journey, learn new skills, and track progress.</p>
+
+      <form id="loginForm">
+        <label for="loginEmail">Email address</label>
+        <input id="loginEmail" name="email" type="email" placeholder="you@example.com" required autocomplete="email">
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="password" type="password" placeholder="Enter your password" required autocomplete="current-password">
+
+        <p id="loginMessage" class="message" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Sign In →</button>
+      </form>
+
+      <p class="switch-link">Don't have an account yet? <a href="register.html">Create an account</a></p>
+      <a class="back-link" href="index.html">← Back to home</a>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
